@@ -1,0 +1,30 @@
+\documentclass[]{report}
+
+\usepackage{amsmath}
+% Title Page
+\title{Homework 1}
+\author{Swaraj Khadanga}
+
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+	\item a. Estimate Maximum Likelihood for \\
+	$f(x)=\frac{x}{\Theta^2}exp{\frac{-x^2}{2\Theta^2}}$\\
+	so Maximum Likelihood function (ML) = $\prod_{1}^{N}\frac{x_{i}}{\Theta^2}exp{\frac{-x_{i}^2}{2\Theta^2}}$ \\
+	$\implies$ Maximum Log Likelihood function (MLL) = \\
+	 $\sum_{1}^{N}[\log x_{i}-2\log \Theta-\frac{x_{i}^2}{2\Theta^2}]$ \\ \\
+	To maximize MLL we need to set $\frac{\partial MLL}{\partial \Theta} = 0$
+	$\implies \sum_{1}^{N}[0-\frac{2}{\Theta}-\frac{x_{i}^2}{2} \frac{-2}{\Theta^3}] = 0$ \\
+	$\implies \sum_{1}^{N}[\frac{-2}{\Theta}+\frac{x_{i}^2}{\Theta^3}] = 0$	
+	$\implies \frac{1}{\Theta}\sum_{1}^{N}[2+\frac{x_{i}^2}{\Theta^2}] = 0$	\\
+	$\implies \sum_{1}^{N}[-2+\frac{x_{i}^2}{\Theta^2}] = 0$		\\
+	$\implies \sum_{1}^{N}-2+ \sum_{1}^{N}\frac{x_{i}^2}{\Theta^2} = 0$		\\
+	$\implies -2N+ \frac{1}{\Theta^2}\sum_{1}^{N}x_{i}^2 = 0$		\\
+	$\implies \frac{1}{\Theta^2}\sum_{1}^{N}x_{i}^2 = 2N$		\\
+	$\implies \frac{\sum_{1}^{N}x_{i}^2}{2N} = \Theta^2$		\\	
+	$\implies \Theta = \sqrt{\frac{\sum_{1}^{N}x_{i}^2}{2N}}$		\\	
+\end{enumerate}
+
+\end{document}          
