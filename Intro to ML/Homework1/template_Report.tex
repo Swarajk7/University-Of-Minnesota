@@ -11,22 +11,27 @@
 
 \begin{enumerate}
 	\item a. Estimate Maximum Likelihood for \\
-	$f(x)=\frac{x}{\Theta^2}exp{\frac{-x^2}{2\Theta^2}}$\\
-	so Maximum Likelihood function (ML) = $\prod_{1}^{N}\frac{x_{i}}{\Theta^2}exp{\frac{-x_{i}^2}{2\Theta^2}}$ \\
+	$f(x)=\frac{x}{\theta^2}exp{\frac{-x^2}{2\theta^2}}$\\
+	so Maximum Likelihood function (ML) = $\prod_{1}^{N}\frac{x_{i}}{\theta^2}exp{\frac{-x_{i}^2}{2\theta^2}}$ \\
 	$\implies$ Maximum Log Likelihood function (MLL) = \\
-	 $\sum_{1}^{N}[\log x_{i}-2\log \Theta-\frac{x_{i}^2}{2\Theta^2}]$ \\ \\
-	To maximize MLL we need to set $\frac{\partial MLL}{\partial \Theta} = 0$
-	$\implies \sum_{1}^{N}[0-\frac{2}{\Theta}-\frac{x_{i}^2}{2} \frac{-2}{\Theta^3}] = 0$ \\
-	$\implies \sum_{1}^{N}[\frac{-2}{\Theta}+\frac{x_{i}^2}{\Theta^3}] = 0$	
-	$\implies \frac{1}{\Theta}\sum_{1}^{N}[2+\frac{x_{i}^2}{\Theta^2}] = 0$	\\
-	$\implies \sum_{1}^{N}[-2+\frac{x_{i}^2}{\Theta^2}] = 0$		\\
-	$\implies \sum_{1}^{N}-2+ \sum_{1}^{N}\frac{x_{i}^2}{\Theta^2} = 0$		\\
-	$\implies -2N+ \frac{1}{\Theta^2}\sum_{1}^{N}x_{i}^2 = 0$		\\
-	$\implies \frac{1}{\Theta^2}\sum_{1}^{N}x_{i}^2 = 2N$		\\
-	$\implies \frac{\sum_{1}^{N}x_{i}^2}{2N} = \Theta^2$		\\	
-	$\implies \Theta = \sqrt{\frac{\sum_{1}^{N}x_{i}^2}{2N}}$		\\	
+	 $\sum_{1}^{N}[\log x_{i}-2\log \theta-\frac{x_{i}^2}{2\theta^2}]$ \\ \\
+	To maximize MLL we need to set $\frac{\partial MLL}{\partial \theta} = 0$
+	$\implies \sum_{1}^{N}[0-\frac{2}{\theta}-\frac{x_{i}^2}{2} \frac{-2}{\theta^3}] = 0$ \\
+	$\implies \sum_{1}^{N}[\frac{-2}{\theta}+\frac{x_{i}^2}{\theta^3}] = 0$	
+	$\implies \frac{1}{\theta}\sum_{1}^{N}[2+\frac{x_{i}^2}{\theta^2}] = 0$	\\
+	$\implies \sum_{1}^{N}[-2+\frac{x_{i}^2}{\theta^2}] = 0$		\\
+	$\implies \sum_{1}^{N}-2+ \sum_{1}^{N}\frac{x_{i}^2}{\theta^2} = 0$		\\
+	$\implies -2N+ \frac{1}{\theta^2}\sum_{1}^{N}x_{i}^2 = 0$		\\
+	$\implies \frac{1}{\theta^2}\sum_{1}^{N}x_{i}^2 = 2N$		\\
+	$\implies \frac{\sum_{1}^{N}x_{i}^2}{2N} = \theta^2$		\\	
+	$\implies \hat{\theta} = \sqrt{\frac{\sum_{1}^{N}x_{i}^2}{2N}}$		\\	
 	\\
-	c. $f(x)= \frac{1}{\Theta} \space\space\space \forall 0 <= x <= \Theta$
+	c. $f(x)= \frac{1}{\theta} \space\space\space \forall 0 <= x <= \theta$\\
+	so Maximum Likelihood (ML) = $\prod_{1}^{N}\frac{1}{\theta}$\\
+	$\implies ML =\frac{1}{\theta^N}$\\
+	To maximize the above likelihood we need to minimize $\theta$ \\
+	But we also have a constraint that $0 <= x <= \theta$
+	\\so $\hat{\theta} = max[{x_{i}}]$
 \end{enumerate}
 
 \end{document}          
