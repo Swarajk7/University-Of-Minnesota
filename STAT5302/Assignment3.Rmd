@@ -1,0 +1,68 @@
+---
+title: "Assignment3"
+output: html_document
+---
+```{r, message=FALSE}
+library(alr4)
+head(UBSprices)
+plot(x = UBSprices$bigmac2003,y = UBSprices$bigmac2009,xlim = c(0,140),ylim = c(0,140),main = "Green - y=x | Red - Fit")
+abline(a=0,b=1,col="green")
+fit <- lm(data = UBSprices, formula = bigmac2003~bigmac2009)
+beta0 <- summary(fit)$coefficients[1,1]
+beta1 <- summary(fit)$coefficients[2,1]
+#abline(a=beta0,b=beta1)
+#lines(UBSprices$bigmac2003,fitted(res))
+abline(fit,col="red")
+```
+<br>
+<h3>Unusual Observations</h3><br>
+1. Our Linear Estimation curve doesn't seem like going through the mean near the cluster around X=20.
+<br> That is probably due to the point at around X=110
+<br>2. Variance of Y foreach X doesn't seem to be same. That is expected because X and Y, doesn't seem to follow bivariate normal distributions.
+
+<ul>
+<li>From the figure, we can easily see that Y doesn't follow a linear relationship with X when X>=60</li>
+<li></li>
+</ul>
+```{r, message=FALSE}
+plot(x = log(UBSprices$bigmac2003),y = log(UBSprices$bigmac2009))
+```
+After log transform we can see that the points in log scale seem to have a linear realtionship.
+```{r}
+plot(x = log(UBSprices$bigmac2003),y = log(UBSprices$bigmac2009))
+logfit <- lm(data = UBSprices, formula = log(bigmac2003)~log(bigmac2009))
+abline(logfit,col="red")
+```
+<h4>Stanard Errors</h4>
+```{r}
+beta0 <- summary(fit)$coefficients[1,1]
+beta1 <- summary(fit)$coefficients[2,1]
+summary(logfit)
+rss <- sum(((beta0 + beta1 * UBSprices$bigmac2003) - UBSprices$bigmac2009)**2)
+estimated_variance <- rss/(length(UBSprices$bigmac2009)-2)
+estimated_variance
+beta0log <- summary(logfit)$coefficients[1,1]
+beta1log <- summary(logfit)$coefficients[2,1]
+rss_log <- sum(((beta0log + beta1log * log(UBSprices$bigmac2003)) - log(UBSprices$bigmac2009))**2)
+estimated_variance_log <- rss_log/(length(UBSprices$bigmac2009)-2)
+estimated_variance_log
+
+```
+```{r}
+calculate_var <- function(y,x,b0,b1,n) {
+  rss <- sum(((b0 + b1 * x) - y)**2)
+  estimated_variance <- rss/(n-2)
+  mx <- mean(x)
+  dx <- x-mx
+  sxx <- sum((dx*dx))
+  var_b0 <- estimated_variance/sxx
+  var_b1 <- estimated_variance *((1.0/n)+(mx^2/sxx))
+  c(estimated_variance,var_b0,var_b1)
+}
+beta0 <- summary(fit)$coefficients[1,1]
+beta1 <- summary(fit)$coefficients[2,1]
+calculate_var(UBSprices$bigmac2009,UBSprices$bigmac2003,beta0,beta1,length(UBSprices$bigmac2009))
+beta0log <- summary(logfit)$coefficients[1,1]
+beta1log <- summary(logfit)$coefficients[2,1]
+calculate_var(log(UBSprices$bigmac2009),log(UBSprices$bigmac2003),beta0log,beta1log,length(UBSprices$bigmac2009))
+```
