@@ -2,6 +2,7 @@
 title: "Assignment3"
 output: html_document
 ---
+<h5> 3.1> </h5>
 ```{r, message=FALSE}
 library(alr4)
 head(UBSprices)
@@ -15,7 +16,7 @@ beta1 <- summary(fit)$coefficients[2,1]
 abline(fit,col="red")
 ```
 <br>
-<h3>Unusual Observations</h3><br>
+<h5>Unusual Observations</h5><br>
 1. Our Linear Estimation curve doesn't seem like going through the mean near the cluster around X=20.
 <br> That is probably due to the point at around X=110
 <br>2. Variance of Y foreach X doesn't seem to be same. That is expected because X and Y, doesn't seem to follow bivariate normal distributions.
@@ -27,13 +28,15 @@ abline(fit,col="red")
 ```{r, message=FALSE}
 plot(x = log(UBSprices$bigmac2003),y = log(UBSprices$bigmac2009))
 ```
+<br>
 After log transform we can see that the points in log scale seem to have a linear realtionship.
+<h5> 3.2.1> </h5>
 ```{r}
 plot(x = log(UBSprices$bigmac2003),y = log(UBSprices$bigmac2009))
 logfit <- lm(data = UBSprices, formula = log(bigmac2003)~log(bigmac2009))
 abline(logfit,col="red")
 ```
-<h4>Stanard Errors</h4>
+<h5>3.2.2Stanard Errors</h5>
 ```{r}
 beta0 <- summary(fit)$coefficients[1,1]
 beta1 <- summary(fit)$coefficients[2,1]
@@ -61,8 +64,50 @@ calculate_var <- function(y,x,b0,b1,n) {
 }
 beta0 <- summary(fit)$coefficients[1,1]
 beta1 <- summary(fit)$coefficients[2,1]
-calculate_var(UBSprices$bigmac2009,UBSprices$bigmac2003,beta0,beta1,length(UBSprices$bigmac2009))
+varlist <- calculate_var(UBSprices$bigmac2009,UBSprices$bigmac2003,beta0,beta1,length(UBSprices$bigmac2009))
 beta0log <- summary(logfit)$coefficients[1,1]
 beta1log <- summary(logfit)$coefficients[2,1]
-calculate_var(log(UBSprices$bigmac2009),log(UBSprices$bigmac2003),beta0log,beta1log,length(UBSprices$bigmac2009))
+varlistlog <- calculate_var(log(UBSprices$bigmac2009),log(UBSprices$bigmac2003),beta0log,beta1log,length(UBSprices$bigmac2009))
+
 ```
+<h5> Standard Error for beta1 and beta0</h5>
+```{r}
+beta0se <- varlist[1]^0.5
+beta1se <- varlist[2]^0.5
+
+beta0logse <- varlistlog[1]^0.5
+beta1logse <- varlistlog[2]^0.5
+print(c("beat0_SE",beta0se))
+print(c("beta1_SE",beta1se))
+print(c("beta0_log_SE",beta0logse))
+print(c("beta01log_SE",beta1logse))
+```
+<h5>3.2.3> Confidence Interval after Log Transformation</h5>
+```{r}
+df <- length(UBSprices$bigmac2003) - 2
+tValue <- qt(0.975,df)
+lower <- beta0log - tValue * beta0logse
+higher <- beta0log + tValue * beta0logse
+print(c("Beta0 Conf Interval","[",lower,higher,"]"))
+
+#for beta1
+lower <- beta1log - tValue * beta1logse
+higher <- beta1log + tValue * beta1logse
+print(c("Beat1 Conf Interval:","[",lower,higher,"]"))
+```
+<h5>3.2.4> estimation of sigma is standard error assosiated while estimating Y|X. 
+<br> as Y won't completely followe a linear relation with X, there would be some assosiated error while predicting Y|X. And each time we take a new sample Y|X is going to change. That variance is what we are estimating and it is assumed to follow a normal distribution with N(0,sigma^2)</h5>
+
+<h5>3.2.5> </h5>
+```{r}
+corelation_beta0_beta1 <- function (x) {
+  n <- length(x)
+  mx <- mean(x)
+  dx <- x-mx
+  sxx <- sum((dx*dx))
+  correl <- -mx/(((sxx/n)+mx^2)^0.5)
+  correl
+}
+corelation_beta0_beta1(log(UBSprices$bigmac2003))
+```
+<h5> -0.98 corelationshop means there is a negeative linear relationship between estimated beta0 and estimated beta1 in log scale. ???</h5>
