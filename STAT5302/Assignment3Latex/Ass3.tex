@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+	3.3\\
+	$y_{i} = \beta_{0} + \beta_{1}\bar{x} + \beta_{1}x_{i} - \beta_{1}\bar{x} + e_{i}$\\
+	$y_{i} = (\beta_{0} + \beta_{1}\bar{x}) + \beta_{1}(x_{i}-\bar{x}) + e_{i}$	\\
+	$y_{i} = \alpha + \beta_{1}(x_{i}-\bar{x}) + e_{i}$	where $\alpha = \beta_{0} + \beta_{1}\bar{x}$\\
+	\begin{itemize}
+		\item If we normalize our x around the mean, then $\alpha$ would be the new intercept of our linear regression line. 
+		\item $y_{i} = \alpha + \beta_{1}(x_{i}-\bar{x}) + e_{i}$\\
+		RSS = $\sum_{1}^{N}[y_{i}-\alpha-\beta_{1}(x_{i}-\bar{x})]^2$\\
+		$\frac{\partial RSS}{\partial \alpha} = 0$\\
+		$\implies \sum_{1}^{N} 2[y_{i}-\alpha-\beta_{1}(x_{i}-\bar{x})][0-1-0] =0$\\
+		$\implies \sum_{1}^{N} [y_{i}-\alpha-\beta_{1}(x_{i}-\bar{x})] = 0$\\ 
+		as we know $\sum_{1}^{N} \beta_{1}(x_{i}-\bar{x}) = 0$\\
+		$\implies \sum_{1}^{N} [y_{i}-\alpha = 0$ \\
+		$\implies \sum_{1}^{N} y_{i} - N\alpha = 0$\\
+		$\implies \hat{\alpha} = \frac{\sum_{1}^{N} y_{i}}{N} = \bar{y}$\\
+		
+		Now we take derivative against $\beta_{1}$
+		RSS = $\sum_{1}^{N}[y_{i}-\alpha-\beta_{1}(x_{i}-\bar{x})]^2$\\
+		$\frac{\partial RSS}{\partial \beta_{1}} = 0$\\
+		$\implies \sum_{1}^{N} 2[y_{i}-\alpha-\beta_{1}(x_{i}-\bar{x})][-(x_{i}-\bar{x})] =0$\\		
+		$\implies \sum_{1}^{N} -2[y_{i}-\alpha-\beta_{1}(x_{i}-\bar{x})][(x_{i}-\bar{x})] =0$\\		
+		$\implies \sum_{1}^{N} [y_{i}-\alpha-\beta_{1}(x_{i}-\bar{x})][(x_{i}-\bar{x})] =0$\\		
+		Now we can replace $\alpha$ with $\hat{\alpha}$ i.e. $\bar{y}$\\
+		So,\\
+		$\implies \sum_{1}^{N} [y_{i}-\bar{y}-\beta_{1}(x_{i}-\bar{x})][(x_{i}-\bar{x})] =0$\\		
+		$\implies \sum_{1}^{N} (y_{i}-\bar{y})(x_{i}-\bar{x}) -\beta_{1}\sum_{1}^{N}(x_{i}-\bar{x})(x_{i}-\bar{x}) =0$\\		
+		$\implies S_{xy} - \beta_{1}S_{xx}=0$\\
+		$\implies \hat{\beta_{1}} = \frac{S_{xy}}{S_{xx}}$
+		\item $\hat{\beta_{1}} = \frac{S_{xy}}{S_{xx}}$ \\\\
+		$\implies \hat{\beta_{1}} = \frac{\sum_{1}^{N} (y_{i}-\bar{y})(x_{i}-\bar{x})}{S_{xx}}$\\
+		$\implies \hat{\beta_{1}} = \frac{\sum_{1}^{N} (y_{i}(x_{i}-\bar{x})-\bar{y}(x_{i}-\bar{x}))}{S_{xx}}$\\	
+		2nd part is 0 and $\frac{\sum_{1}^{N} (y_{i}(x_{i}-\bar{x})}{S_{xx}}$ is constant\\
+		$\implies \hat{\beta_{1}} = \sum_{1}^{N} c_{i}y_{i}$\\
+		$\implies Var(\hat{\beta_{1}}) = Var(\sum_{1}^{N} c_{i}y_{i})$ 
+		$=\sum_{1}^{N} c_{i}^2\sigma^2$\\
+		$\sum_{1}^{N} c_{i}^2 = \frac{1}{Sxx}$
+		$\implies Var(\hat{\beta_{1}}) = \frac{\sigma^2}{S_{xx}}$
+		\\
+		\\
+		\\
+		$Var(\hat{\alpha}) = Var(\bar{y}) = \frac{\sigma^2}{N}$
+		\\
+		\\
+		$Cov(\hat{\alpha} ,\hat{\beta_{1}})=Cov(\frac{\sum_{1}^{N} y_{i}}{N},\sum_{1}^{N} c_{i})$\\
+		$\implies Cov(\hat{\alpha},\hat{\beta_{1}}) = \frac{1}{N} \sum_{1}^{N}\sum_{1}^{N}c_{j}Cov(y_{i},y_{j}) $\\
+		for $i<>j$ $Cov(y_{i},y_{j}==0) = 0$\\
+		$\implies Cov(\hat{\alpha},\hat{\beta_{1}}) = \frac{1}{N} \sum_{1}^{N}c_{i}$
+		$\implies Cov(\hat{\alpha},\hat{\beta_{1}}) = 0$
+	\end{itemize}
+\end{document}
