@@ -5,8 +5,8 @@ s2=0.3;
 
 % generate random N data points
 N=15; 
-x1=zeros(N,1); 
-x2=zeros(N,1);
+x1=zeros(N,1); %p(x|C1)
+x2=zeros(N,1); %p(X|C2)
 for i=1:N
     z=sum(rand(12,1))-6;  
     x1(i)=z*s1+m1; 

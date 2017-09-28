@@ -8,11 +8,12 @@ library(alr4)
 head(UBSprices)
 plot(x = UBSprices$bigmac2003,y = UBSprices$bigmac2009,xlim = c(0,140),ylim = c(0,140),main = "Green - y=x | Red - Fit")
 abline(a=0,b=1,col="green")
-fit <- lm(data = UBSprices, formula = bigmac2003~bigmac2009)
+fit <- lm(data = UBSprices, formula = bigmac2009~bigmac2003)
 beta0 <- summary(fit)$coefficients[1,1]
 beta1 <- summary(fit)$coefficients[2,1]
 #abline(a=beta0,b=beta1)
 #lines(UBSprices$bigmac2003,fitted(res))
+summary(fit)
 abline(fit,col="red")
 ```
 <br>
@@ -23,33 +24,32 @@ abline(fit,col="red")
 
 <ul>
 <li>From the figure, we can easily see that Y doesn't follow a linear relationship with X when X>=60</li>
-<li></li>
+<li>Again from the figure, we can see that variance of Y is very high while we move along X. So for each fixed X, E(Y|X) doesn't seem to have a fixed variance.</li>
 </ul>
 ```{r, message=FALSE}
 plot(x = log(UBSprices$bigmac2003),y = log(UBSprices$bigmac2009))
 ```
 <br>
-After log transform we can see that the points in log scale seem to have a linear realtionship.
+After log transform we can see that the points in log scale seem to have a linear realtionship. And variance have clearly decreased.
 <h5> 3.2.1> </h5>
 ```{r}
 plot(x = log(UBSprices$bigmac2003),y = log(UBSprices$bigmac2009))
-logfit <- lm(data = UBSprices, formula = log(bigmac2003)~log(bigmac2009))
+logfit <- lm(data = UBSprices, formula = log(bigmac2009)~log(bigmac2003))
 abline(logfit,col="red")
 ```
 <h5>3.2.2Stanard Errors</h5>
 ```{r}
 beta0 <- summary(fit)$coefficients[1,1]
 beta1 <- summary(fit)$coefficients[2,1]
-summary(logfit)
+#summary(logfit)$coefficients
 rss <- sum(((beta0 + beta1 * UBSprices$bigmac2003) - UBSprices$bigmac2009)**2)
 estimated_variance <- rss/(length(UBSprices$bigmac2009)-2)
-estimated_variance
+#estimated_variance
 beta0log <- summary(logfit)$coefficients[1,1]
 beta1log <- summary(logfit)$coefficients[2,1]
 rss_log <- sum(((beta0log + beta1log * log(UBSprices$bigmac2003)) - log(UBSprices$bigmac2009))**2)
 estimated_variance_log <- rss_log/(length(UBSprices$bigmac2009)-2)
-estimated_variance_log
-
+#estimated_variance_log
 ```
 ```{r}
 calculate_var <- function(y,x,b0,b1,n) {
@@ -58,8 +58,8 @@ calculate_var <- function(y,x,b0,b1,n) {
   mx <- mean(x)
   dx <- x-mx
   sxx <- sum((dx*dx))
-  var_b0 <- estimated_variance/sxx
-  var_b1 <- estimated_variance *((1.0/n)+(mx^2/sxx))
+  var_b1 <- estimated_variance/sxx
+  var_b0 <- estimated_variance *((1.0/n)+((mx^2.0)/sxx))
   c(estimated_variance,var_b0,var_b1)
 }
 beta0 <- summary(fit)$coefficients[1,1]
@@ -68,35 +68,47 @@ varlist <- calculate_var(UBSprices$bigmac2009,UBSprices$bigmac2003,beta0,beta1,l
 beta0log <- summary(logfit)$coefficients[1,1]
 beta1log <- summary(logfit)$coefficients[2,1]
 varlistlog <- calculate_var(log(UBSprices$bigmac2009),log(UBSprices$bigmac2003),beta0log,beta1log,length(UBSprices$bigmac2009))
-
 ```
 <h5> Standard Error for beta1 and beta0</h5>
 ```{r}
-beta0se <- varlist[1]^0.5
-beta1se <- varlist[2]^0.5
+beta0se <- varlist[2]^0.5
+beta1se <- varlist[3]^0.5
 
-beta0logse <- varlistlog[1]^0.5
-beta1logse <- varlistlog[2]^0.5
-print(c("beat0_SE",beta0se))
-print(c("beta1_SE",beta1se))
-print(c("beta0_log_SE",beta0logse))
-print(c("beta01log_SE",beta1logse))
+beta0logse <- varlistlog[2]^0.5
+beta1logse <- varlistlog[3]^0.5
+#print(c("beat0_SE",beta0se))
+#print(c("beta1_SE",beta1se))
+sprintf("beta0_log_SE:%f  beta1_log_SE:%f",beta0logse,beta1logse)
 ```
+<h5>If we repeat the experiment for same X again and again, we will get estimates for beta0 and beta1. That error is estimated by standard error.
 <h5>3.2.3> Confidence Interval after Log Transformation</h5>
 ```{r}
 df <- length(UBSprices$bigmac2003) - 2
 tValue <- qt(0.975,df)
 lower <- beta0log - tValue * beta0logse
 higher <- beta0log + tValue * beta0logse
-print(c("Beta0 Conf Interval","[",lower,higher,"]"))
+sprintf("Beta0 Conf Interval: [%f,%f]",lower,higher)
 
 #for beta1
 lower <- beta1log - tValue * beta1logse
 higher <- beta1log + tValue * beta1logse
-print(c("Beat1 Conf Interval:","[",lower,higher,"]"))
+sprintf("Beta1 Conf Interval: [%f,%f]",lower,higher)
 ```
+<h5>If we repeat the experiemnt multiple times, true value of beta0 and beta1 will 95% time will fall in the confidence interval.</h5>
 <h5>3.2.4> estimation of sigma is standard error assosiated while estimating Y|X. 
-<br> as Y won't completely followe a linear relation with X, there would be some assosiated error while predicting Y|X. And each time we take a new sample Y|X is going to change. That variance is what we are estimating and it is assumed to follow a normal distribution with N(0,sigma^2)</h5>
+<br> as Y won't completely follow a linear relation with X, there would be some assosiated error while predicting Y|X. And each time we take a new sample Y|X is going to change. That variance is what we are estimating and it is assumed to follow a normal distribution with N(0,sigma^2)</h5>
+
+```{r}
+hypo_beta0log = 0
+val = (beta0log - hypo_beta0log)/beta0logse
+sprintf("Tvalue for beta0log = 0: %f",val)
+sprintf("Pvalue for beta0log = 0: %f",2*pt(-abs(val),df))
+
+hypo_beta1log = 1
+val = (beta1log-hypo_beta1log)/beta1logse
+sprintf("Tvalue for beta1log = 1: %f",val)
+sprintf("Pvalue for beta1log = 0: %f",2*pt(-abs(val),df))
+```
 
 <h5>3.2.5> </h5>
 ```{r}
@@ -110,4 +122,4 @@ corelation_beta0_beta1 <- function (x) {
 }
 corelation_beta0_beta1(log(UBSprices$bigmac2003))
 ```
-<h5> -0.98 corelationshop means there is a negeative linear relationship between estimated beta0 and estimated beta1 in log scale. ???</h5>
+<h5> -0.98 corelationshop means there is a negeative linear relationship between estimated beta0 and estimated beta1 in log scale. And which means we can't test hypothesis for beta0 and beta1 independently. If we repeat the experiment with same X, we can get different values of beta0 and beta1. That would be our population.</h5>
