@@ -21,6 +21,7 @@ prior2 = 0.8;
 g1 = CalculateGaussianDiscr(xtest,m1,S1,prior1);
 g2 = CalculateGaussianDiscr(xtest,m2,S2,prior2);
 
+%added for testing the code
 %g1 = log(mvnpdf(xtest,m1,S1)) + log(prior1);
 %g2 = log(mvnpdf(xtest,m2,S2)) + log(prior2);
 %%%%
@@ -47,8 +48,9 @@ disp(strcat('Independent Covariance: ', num2str(error_rate,3)));
 g1 = CalculateGaussianDiscr(xtest,m1,S,prior1); % - 4*log(2*pi);
 g2 = CalculateGaussianDiscr(xtest,m2,S,prior2); % - 4*log(2*pi);
 
-g11 = log(mvnpdf(xtest,m1,S)) + log(prior1);
-g21 = log(mvnpdf(xtest,m2,S)) + log(prior2);
+%Added for testing code
+%g11 = log(mvnpdf(xtest,m1,S)) + log(prior1);
+%g21 = log(mvnpdf(xtest,m2,S)) + log(prior2);
 
 %%%%
 
@@ -57,3 +59,4 @@ g21 = log(mvnpdf(xtest,m2,S)) + log(prior2);
 error_rate = CalculateErrorRate(g1,g2,ytest);
 %%%%
 disp(strcat('Shared Covariance: ', num2str(error_rate,3)));
+

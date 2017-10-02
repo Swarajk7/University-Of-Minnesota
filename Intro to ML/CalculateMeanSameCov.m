@@ -18,12 +18,7 @@
 %
 function [m1,m2,S] = CalculateMeanSameCov(X, y, prior1, prior2)
 %%%% YOUR CODE STARTS HERE
-    X1 = X(y==1,:);
-    X2 = X(y==2,:);
-    m1 = mean(X1);
-    m2 = mean(X2);
-    S1 = cov(X1);
-    S2 = cov(X2);
+    [m1,m2,S1,S2] = CalculateMeanIndepCov(X,y); %calculate independent cov and take prior
     S = S1*prior1 + S2*prior2;
 %%%%
 end

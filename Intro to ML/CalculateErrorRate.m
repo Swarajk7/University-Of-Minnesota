@@ -17,8 +17,7 @@
 %
 function error_rate = CalculateErrorRate(g1, g2, y_tst)
 %%%% YOUR CODE STARTS HERE
-    predicted = (g1>g2) + 1;
-    %disp(predicted==y_tst);
+    predicted = (g1<=g2) + 1; %if g2 is large class should be classified as 2 or 1 otherwise.
     error_rate = sum(predicted ~= y_tst)/length(y_tst);
 %%%%
 end

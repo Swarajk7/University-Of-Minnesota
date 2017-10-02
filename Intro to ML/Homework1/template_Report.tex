@@ -1,6 +1,7 @@
 \documentclass[]{report}
-
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
 \usepackage{amsmath}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 % Title Page
 \title{Homework 1}
 \author{Swaraj Khadanga}
@@ -26,12 +27,53 @@
 	$\implies \frac{\sum_{1}^{N}x_{i}^2}{2N} = \theta^2$		\\	
 	$\implies \hat{\theta} = \sqrt{\frac{\sum_{1}^{N}x_{i}^2}{2N}}$		\\	
 	\\
+	b. $f(x|\alpha,\theta) = \alpha \theta^{-\alpha} x^{\alpha-1} \exp [-(\frac{x}{\theta})^{\alpha}]$\\
+	so Maximum Likelihood (ML) = $\prod_{1}^{N} \alpha \theta^{-\alpha} x_{i}^{\alpha-1} \exp [-(\frac{x_{i}}{\theta})^{\alpha}]$\\
+	Maximum Log Likelihood \\
+	(MLL) = $\sum_{1}^{N} [\log \alpha - \alpha \log \theta + (\alpha-1)\log x_{i} - (\frac{x_{i}}{\theta})^{\alpha}]$\\
+	To maximize MLL we need to set $\frac{\partial MLL}{\partial \theta} = 0$\\
+	$\implies \sum_{1}^{N} [0 -\frac{\alpha}{\theta} + 0 - \alpha (\frac{x_{i}}{\theta})^{\alpha -1} \frac{-x_{i}}{\theta ^2}] = 0$\\
+	$\implies \sum_{1}^{N} [-\frac{\alpha}{\theta} + \frac{\alpha}{\theta} (\frac{x_{i}}{\theta})^{\alpha} ] = 0$\\
+	$\implies \frac{\alpha}{\theta} \sum_{1}^{N} [-1 + (\frac{x_{i}}{\theta})^{\alpha} ] = 0$\\
+	$\implies \sum_{1}^{N} [-1 + (\frac{x_{i}}{\theta})^{\alpha} ] = 0$\\
+	$\implies -N + \sum_{1}^{N} (\frac{x_{i}}{\theta})^{\alpha} = 0$\\
+	$\implies \sum_{1}^{N} (\frac{x_{i}}{\theta})^{\alpha} = N$\\	
+	$\implies \frac{1}{\theta^\alpha}\sum_{1}^{N} {x_{i}}^{\alpha} = N $\\
+	$\implies \theta^\alpha = \frac{1}{N} \sum_{1}^{N} {x_{i}}^{\alpha}$\\
+	$\implies \hat{\theta} = [\frac{1}{N} \sum_{1}^{N} {x_{i}}^{\alpha}] ^{\frac{1}{\alpha}}$\\
+	\\
 	c. $f(x)= \frac{1}{\theta} \space\space\space \forall 0 <= x <= \theta$\\
 	so Maximum Likelihood (ML) = $\prod_{1}^{N}\frac{1}{\theta}$\\
 	$\implies ML =\frac{1}{\theta^N}$\\
 	To maximize the above likelihood we need to minimize $\theta$ \\
 	But we also have a constraint that $0 <= x <= \theta$
 	\\so $\hat{\theta} = max[{x_{i}}]$
+	
+	\item 
+	$p(x|C_{1}) = \frac{1}{\sqrt{2\pi}\sigma_{1}}\exp^\frac{-(x-\mu_{1})^2}{2\sigma_{1}^2}$\\
+	$p(x|C_{2}) = \frac{1}{\sqrt{2\pi}\sigma_{2}}\exp^\frac{-(x-\mu_{2})^2}{2\sigma_{2}^2}$\\
+	$\log p(x|C_{1}) = -0.5\log 2\pi - log \sigma1 -\frac{(x-\mu_{1})^2}{2\sigma_{1}^2}$\\
+	$\log p(x|C_{2}) = -0.5\log 2\pi - log \sigma2 -\frac{(x-\mu_{2})^2}{2\sigma_{2}^2}$\\
+	$p(C|x) = \frac{P(x|C)P(C)}{P(x)}$\\
+	$P(x)$ is constant for each class. So we can ignore this in discriminant function.\\
+	Discriminant function \\
+	$g_{1} = \log p(x|C_{1}) + \log p(C)$\\
+	$g_{2} = \log p(x|C_{2}) + \log p(C)$\\
+	for each test item, we can calculate g1 and g2 and classify them into classes by comparing g1 and g2.
+	
+	\item Multivariate Gaussian Log Likelihood estimation\\
+	$p(x|C) = \frac{1}{(2\pi)^\frac{d}{2}\abs{\Sigma}^\frac{1}{2}}\exp[-\frac{1}{2}(x-\mu)^\intercal \Sigma^{-1} (x-\mu)]$\\
+	\begin{itemize}
+		\item First read test and train file.
+		\item From training file learn $\mu_{1},\mu_{2},S_{1},S_{2}$ by calling mean and cov function.
+		\item calculate discriminant function by fitting to function \\
+		 $g_{i} = log(p(x|C_{i})) + log(C_{i})$ where $log(C_{i})$ is prior.
+		\item calculate g1 and g2 by passing $(\mu_{1},S_{1}) and (\mu2,S_{2})$ 
+		\item during calculation we can ignore the constant terms as they are same for both.
+		\item compare $g_{1}$ and $g_{2}$ and chose class 1 if g1 is greater and 2 if g2 is greater. 
+		\item calculate the error rate by taking the fraction of number of misclassified classes by total number of test data.
+		\item calculate shared S = $p(C_{1})S_{1}+p(C_{2})S_{2}$
+		\item do the same steps for same covariance S by passing ($\mu_{1}$,S) and ($\mu_{2}$,S).
+	\end{itemize}
 \end{enumerate}
-
 \end{document}          
