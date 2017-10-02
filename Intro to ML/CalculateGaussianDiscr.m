@@ -19,7 +19,6 @@ function g = CalculateGaussianDiscr(X, m, S, prior)
     v=size(X);
     n = v(1);
     d = v(2);
-    m=m';
     g = zeros(n,1);
     Sinv = inv(S);
     W = -0.5 * Sinv;

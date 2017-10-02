@@ -19,8 +19,8 @@ function [m1,m2,S1,S2] = CalculateMeanIndepCov(X, y)
 %%%% YOUR CODE STARTS HERE
     X1 = X(y==1,:);
     X2 = X(y==2,:);
-    m1 = mean(X1);
-    m2 = mean(X2);
+    m1 = mean(X1)';
+    m2 = mean(X2)';
     S1 = cov(X1);
     S2 = cov(X2);
 %%%%
