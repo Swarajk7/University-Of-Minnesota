@@ -17,7 +17,9 @@
 %
 function error_rate = CalculateErrorRate(g1, g2, y_tst)
 %%%% YOUR CODE STARTS HERE
-
+    predicted = (g1>g2) + 1;
+    %disp(predicted==y_tst);
+    error_rate = sum(predicted ~= y_tst)/length(y_tst);
 %%%%
 end
 

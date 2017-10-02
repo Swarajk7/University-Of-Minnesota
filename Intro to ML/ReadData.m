@@ -20,7 +20,12 @@
 %
 function [X_trn, y_trn, X_tst, y_tst] = ReadData(training_filename, test_filename)
 %%%% YOUR CODE STARTS HERE
-
+    train = csvread(training_filename);
+    test = csvread(test_filename);
+    X_trn = train(:,1:8);
+    y_trn = train(:,9);
+    X_tst = test(:,1:8);
+    y_tst = test(:,9);
 %%%%
 end
 
